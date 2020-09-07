@@ -1,0 +1,166 @@
+<!DOCTYPE HTML>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <title> Validation Form</title>
+    <meta name="viewport" content="width=device-width, user-scalable=no">
+	<link rel="stylesheet" href="fv.css" type="text/css" />
+</head>
+<body>
+	
+	<div id='wrap'>
+        
+		<div class='options'>
+			
+		</div>
+        <section>
+        <form action="" method="post" novalidate>
+            <fieldset>
+                <div class="field">
+                    <label>
+                        <span>Name</span>
+							<input data-validate-length-range="6" data-validate-words="2" name="name" placeholder="ex. John f. Kennedy" required="required" />
+						</label>
+						<div class='tooltip help'>
+							<span>?</span>
+							<div class='content'>
+								<b></b>
+								<p>Name must be at least 2 words</p>
+							</div>
+						</div>
+					</div>
+					<div class="field">
+						<label>
+							<span>Occupation</span>
+							<input class='optional' name="occupation" data-validate-length-range="5,15" type="text" />
+						</label>
+						<div class='tooltip help'>
+							<span>?</span>
+							<div class='content'>
+								<b></b>
+								<p>An optional field. This field is only validated when it has a value.<br /><em>Minimum 5 chars, maximum 15</em></p>
+							</div>
+						</div>
+                        <span class='extra'>(optional)</span>
+					</div>
+					<div class="field">
+						<label>
+							<span>HTML5 Regex</span>
+							<!--<input required="required" type="text" pattern='\d+' />-->
+							<input type="text" data-validate-length-range="2,6" required="required" placeholder="eg. 123456"  pattern="alphanumeric" />
+						</label>
+						<div class='tooltip help'>
+							<span>?</span>
+							<div class='content'>
+								<b></b>
+								<p>This field uses HTML5 "pattern" attribute to be validated.<br /><em>"<strong>\d+</strong>" - only digits are allowed</em></p>
+							</div>
+						</div>
+					</div>
+					<div class="field">
+						<label>
+							<span>email</span>
+							<input name="email" class='email' required="required" type="email" />
+						</label>
+					</div>
+					<div class="field">
+						<label>
+							<span>Confirm email address</span>
+							<input type="email" class='email' name="confirm_email" data-validate-linked='email' required='required'>
+						</label>
+					</div>
+					<div class="field">
+						<label>
+							<span>Number</span>
+							<input type="number" class='number' name="number" data-validate-minmax="10,100" required='required'>
+						</label>
+						<div class='tooltip help'>
+							<span>?</span>
+							<div class='content'>
+								<b></b>
+								<p>Number must be between 10 and 100</p>
+							</div>
+						</div>
+					</div>
+					<div class="field">
+						<label>
+							<span>Date</span>
+							<input class='date' type="date" name="date" required='required'>
+						</label>
+					</div>
+					<div class="field">
+						<label>
+							<span>Time</span>
+							<input class='time' type="time" name="time" required='required'>
+							<div class='tooltip help'>
+							<span>?</span>
+							<div class='content'>
+								<b></b>
+								<p>Format should be: XX:XX</p>
+							</div>
+						</div>
+						</label>
+					</div>
+					<div class="field">
+						<label>
+							<span>Password</span>
+							<input type="password" name="password" data-validate-length="6,8" required='required'>
+						</label>
+						<div class='tooltip help'>
+							<span>?</span>
+							<div class='content'>
+								<b></b>
+								<p>Should be of length 6 OR 8 characters</p>
+							</div>
+						</div>
+					</div>
+					<div class="field">
+						<label>
+							<span>Checkbox</span>
+							<input required="required" type="checkbox" />
+							<span>I agree</span>
+						</label>
+					</div>
+
+					
+				<button type='submit'>Submit</button>
+                <button type='reset'>Reset</button>
+            </fieldset>
+            </form>
+        </section>
+    </div>
+
+	<script src="https://ajax.googleapis.com/ajax/libs/jquery/1.9.1/jquery.min.js"></script>
+    <script src="multifield.js"></script>
+    <script src="validator.js"></script>
+	<script>
+		// initialize a validator instance from the "FormValidator" constructor.
+        // A "<form>" element is optionally passed as an argument, but is not a must
+		var validator = new FormValidator({"events" : ['blur', 'input', 'change']}, document.forms[0]);
+
+
+        // on form "submit" event
+		document.forms[0].onsubmit = function(e){
+			var submit = true,
+				validatorResult = validator.checkAll(this);
+
+			console.log(validatorResult);
+			return !!validatorResult.valid;
+		};
+
+
+        // on form "reset" event
+        document.forms[0].onreset = function(e){
+            validator.reset();
+        };
+
+        // stuff related ONLY for this demo page:
+		$('.toggleValidationTooltips').change(function(){
+			validator.settings.alerts = !this.checked;
+
+			if( this.checked )
+				$('form .alert').remove();
+		}).prop('checked',false);
+	</script>
+</body>
+</html>
